@@ -3,48 +3,48 @@
 		
 ## It supports a shell's most fundamental functions:
 
-	1.Input (<)/Output(>) redirection to/from files.
+1. Input (<)/Output(>) redirection to/from files.
  
-	2.Connection of multiple processes through pipes ( | ).
+2. Connection of multiple processes through pipes ( | ).
  
-	3.Creation and execution of background processes ( & ).
+3. Creation and execution of background processes ( & ).
  
-	4.Execution of multiple commands in a single command prompt ( ; ).
+4. Execution of multiple commands in a single command prompt ( ; ).
  
-	5.The pushing of signals to the current executing process.
+5. The pushing of signals to the current executing process.
  
-	6.Unix-style globbing with wild characters.
+6. Unix-style globbing with wild characters.
  
-	7.Creation, use and destruction of aliases.
+7. Creation, use and destruction of aliases.
 
-	8.Usage of environment variables ( $foo / ${foo} )
+8. Usage of environment variables ( $foo / ${foo} )
 
-	9.The printing and use of previous commands.
+9. The printing and use of previous commands.
 
 ## Functions it does *not* support:
-1.Redirecting file descriptors other than 0 and 1. As a result, one cannot, for example, redirect the error file descriptor to a file.
-2.Moving background processes to the foreground.
+1. Redirecting file descriptors other than 0 and 1. As a result, one cannot, for example, redirect the error file descriptor to a file.
+2. Moving background processes to the foreground.
 
 ## Built-in functions:
-cd: 
+- cd: 
 	Works just like in other shells, changes current directory to the argument passed to cd.
 
-createalias/destroyalias: 
+- createalias/destroyalias: 
 	Creates/Destroys alias
 
-myHistory: 
+- myHistory: 
 	displays previously used commands as well as their corresponding number, by order of last to first, up to a certain number of commands
 
-myHistory [number]: 
+- myHistory [number]: 
 	runs command with corresponding number
 
-quit: 
+- quit: 
 	exits the shell.
 
 ## Usage:  	
-make all (compile)
-./mysh (execute)
-make run (execute)	
+- make all (compile)
+- ./mysh (execute)
+- make run (execute)	
 
 ## Implementation details:
 ### Parsing:
