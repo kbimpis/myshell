@@ -1,7 +1,7 @@
 ## This repository consists of a simple shell implementation in C.
 
 		
-##It supports a shell's most fundamental functions:
+# It supports a shell's most fundamental functions:
 1.Input (<)/Output(>) redirection to/from files.
 2.Connection of multiple processes through pipes ( | ).
 3.Creation and execution of background processes ( & ).
