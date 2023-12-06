@@ -20,11 +20,20 @@
 
 **Built-in functions:**
 
-	cd: Works just like in other shells, changes current directory to the argument passed to cd.
-	createalias/destroyalias: Creates/Destroys alias
-	myHistory: displays previously used commands as well as their corresponding number, by order of last to first, up to a certain number of commands,
-	myHistory [number]: runs command with corresponding number
-	quit: exits the shell.
+	cd: 
+ 		Works just like in other shells, changes current directory to the argument passed to cd.
+   
+	createalias/destroyalias: 
+ 		Creates/Destroys alias
+   
+	myHistory: 
+ 		displays previously used commands as well as their corresponding number, by order of last to first, up to a certain number of commands
+   
+	myHistory [number]: 
+ 		runs command with corresponding number
+   
+	quit: 
+ 		exits the shell.
 
 **Usage:**  	
 make all (compile)
