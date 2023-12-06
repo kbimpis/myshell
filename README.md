@@ -26,19 +26,19 @@
 2. Moving background processes to the foreground.
 
 ## Built-in functions:
-- cd: 
+- **cd**: 
 	Works just like in other shells, changes current directory to the argument passed to cd.
 
-- createalias/destroyalias: 
+- **createalias** / **destroyalias**: 
 	Creates/Destroys alias
 
-- myHistory: 
+- **myHistory**: 
 	displays previously used commands as well as their corresponding number, by order of last to first, up to a certain number of commands
 
-- myHistory [number]: 
+- **myHistory [number]**: 
 	runs command with corresponding number
 
-- quit: 
+- **quit**: 
 	exits the shell.
 
 ## Usage:  	
@@ -48,22 +48,22 @@
 
 ## Implementation details:
 ### Parsing:
--Max input characters are defined as 4096. Input is read, and split into jobs. Each job is assigned the contents in between ";" characters. In other words, a job is either a single process (function), or a pipeline of many processes. Note: in this README file, as well as in the comments of the code, "process" might mean a function(e.g. "ls"), or an instance of an executable, depending on the context.
--Each job contains a linked list of all its processes(everything in between pipes, "|"). The first process might contain an input redirect, and the last one an output redirect. Note: for the shell to consider it a special character, an I/O redirect (or a pipe) must be a separate token, which means it must be surrounded by space characters. Otherwise it is considered part of an argument. If an I/O redirect is confirmed, the necessary duplication is done through a dup2() call, and the token is removed from the array.
--All environment variables / aliases / words that contain wild characters are dereferenced before execution. At the end of the parsing of the input, a linked list of all jobs is returned to the main to be executed.
+- Max input characters are defined as 4096. Input is read, and split into jobs. Each job is assigned the contents in between ";" characters. In other words, a job is either a single process (function), or a pipeline of many processes. Note: in this README file, as well as in the comments of the code, "process" might mean a function(e.g. "ls"), or an instance of an executable, depending on the context.
+- Each job contains a linked list of all its processes(everything in between pipes, "|"). The first process might contain an input redirect, and the last one an output redirect. Note: for the shell to consider it a special character, an I/O redirect (or a pipe) must be a separate token, which means it must be surrounded by space characters. Otherwise it is considered part of an argument. If an I/O redirect is confirmed, the necessary duplication is done through a dup2() call, and the token is removed from the array.
+- All environment variables / aliases / words that contain wild characters are dereferenced before execution. At the end of the parsing of the input, a linked list of all jobs is returned to the main to be executed.
 
 ### Execution:
--Each job in the list is executed in order. In each job, the first process is created and checked for I/O redirects (if it is the only process in the job, it is possible to redirect its output as well). A child process is created through fork(), and the process is executed through execvp(). execvp() is the exec function of choice since it is impossible to know the arguments beforehand, and the shell utilises the PATH variable.
--If there are multiple processes, an array of pipes is created. For each middle process, a child-process is created through fork(). There, the called process is executed. It takes input through the read part of the previous pipe (whose index is 1 lower than the process), and writes the output into the write part of the same-indexed pipe. All other pipes are closed immediately. The last process is executed, after checking for possible output redirects. By default, the first process reads from stdin, and the last writes into stdout. Note: stderr is not altered for any process in the pipeline, and there is no command-line option to change that.
--If the job is not a background process, it waits for all its children to finish before moving on to the next process.
--The above is true for every non-builtin job. If, during parsing, a built-in function call is detected, the job's type changes accordingly and instead of the normal execution through execpv(), the utilized function is called directly, and the program goes on to the next job.
+- Each job in the list is executed in order. In each job, the first process is created and checked for I/O redirects (if it is the only process in the job, it is possible to redirect its output as well). A child process is created through fork(), and the process is executed through execvp(). execvp() is the exec function of choice since it is impossible to know the arguments beforehand, and the shell utilises the PATH variable.
+- If there are multiple processes, an array of pipes is created. For each middle process, a child-process is created through fork(). There, the called process is executed. It takes input through the read part of the previous pipe (whose index is 1 lower than the process), and writes the output into the write part of the same-indexed pipe. All other pipes are closed immediately. The last process is executed, after checking for possible output redirects. By default, the first process reads from stdin, and the last writes into stdout. Note: stderr is not altered for any process in the pipeline, and there is no command-line option to change that.
+- If the job is not a background process, it waits for all its children to finish before moving on to the next process.
+- The above is true for every non-builtin job. If, during parsing, a built-in function call is detected, the job's type changes accordingly and instead of the normal execution through execpv(), the utilized function is called directly, and the program goes on to the next job.
 
 ### Built-in functions:
-1."createalias" takes in a key, and a value that is inside quotes, and either creates or updates an existing alias with the same key. It then adds it to a global list of all aliases (alias.h :: first)
-2."destroyalias" removes it from the alias list and deallocates all related memory.
-3."myHistory" can be called either with, or without an argument. "myHistory" without an argument shows the current history, that is the last 20 commands from the user input. "myHistory", followed by an integer, causes the command with the corresponding index to be called, in its entirety. A command like that might range from a single process, to a list of jobs, as it copies the whole input before the newline character.
-4."cd" functions like in bash, changing the current directory to the one given as argument, unless no argument is given, in which case the directory changes to the home directory.
-5."quit" frees up all allocated memory, and closes the program.
+1. "createalias" takes in a key, and a value that is inside quotes, and either creates or updates an existing alias with the same key. It then adds it to a global list of all aliases (alias.h :: first)
+2. "destroyalias" removes it from the alias list and deallocates all related memory.
+3. "myHistory" can be called either with, or without an argument. "myHistory" without an argument shows the current history, that is the last 20 commands from the user input. "myHistory", followed by an integer, causes the command with the corresponding index to be called, in its entirety. A command like that might range from a single process, to a list of jobs, as it copies the whole input before the newline character.
+4. "cd" functions like in bash, changing the current directory to the one given as argument, unless no argument is given, in which case the directory changes to the home directory.
+5. "quit" frees up all allocated memory, and closes the program.
 
 ### Signals:
 A signal handler is setup using sigaction, to ignore and push signals taken from the shell, into the currently active process.
