@@ -2,7 +2,6 @@
 
 		
 #It supports a shell's most fundamental functions:
-
 1.Input (<)/Output(>) redirection to/from files.
 2.Connection of multiple processes through pipes ( | ).
 3.Creation and execution of background processes ( & ).
@@ -14,12 +13,10 @@
 9.The printing and use of previous commands.
 
 ##Functions it does *not* support:
-
 1.Redirecting file descriptors other than 0 and 1. As a result, one cannot, for example, redirect the error file descriptor to a file.
 2.Moving background processes to the foreground.
 
 #Built-in functions:
-
 cd: 
 	Works just like in other shells, changes current directory to the argument passed to cd.
 
@@ -41,15 +38,12 @@ make all (compile)
 make run (execute)	
 
 ## Implementation details:
-
 #Parsing:
-
 -Max input characters are defined as 4096. Input is read, and split into jobs. Each job is assigned the contents in between ";" characters. In other words, a job is either a single process (function), or a pipeline of many processes. Note: in this README file, as well as in the comments of the code, "process" might mean a function(e.g. "ls"), or an instance of an executable, depending on the context.
 -Each job contains a linked list of all its processes(everything in between pipes, "|"). The first process might contain an input redirect, and the last one an output redirect. Note: for the shell to consider it a special character, an I/O redirect (or a pipe) must be a separate token, which means it must be surrounded by space characters. Otherwise it is considered part of an argument. If an I/O redirect is confirmed, the necessary duplication is done through a dup2() call, and the token is removed from the array.
 -All environment variables / aliases / words that contain wild characters are dereferenced before execution. At the end of the parsing of the input, a linked list of all jobs is returned to the main to be executed.
 
 #Execution:
-
 -Each job in the list is executed in order. In each job, the first process is created and checked for I/O redirects (if it is the only process in the job, it is possible to redirect its output as well). A child process is created through fork(), and the process is executed through execvp(). execvp() is the exec function of choice since it is impossible to know the arguments beforehand, and the shell utilises the PATH variable.
 -If there are multiple processes, an array of pipes is created. For each middle process, a child-process is created through fork(). There, the called process is executed. It takes input through the read part of the previous pipe (whose index is 1 lower than the process), and writes the output into the write part of the same-indexed pipe. All other pipes are closed immediately. The last process is executed, after checking for possible output redirects. By default, the first process reads from stdin, and the last writes into stdout. Note: stderr is not altered for any process in the pipeline, and there is no command-line option to change that.
 -If the job is not a background process, it waits for all its children to finish before moving on to the next process.
@@ -63,11 +57,9 @@ make run (execute)
 5."quit" frees up all allocated memory, and closes the program.
 
 #Signals:
-
 A signal handler is setup using sigaction, to ignore and push signals taken from the shell, into the currently active process.
 
 Background processes:
-
 A job ending in the ampersand(&) character is considered background. In that case, the shell does not wait for the children to finish before executing the rest of the jobs. Background processes also cannot be interrupted or stopped due to SIGINT / SIGTSTP.
 
 
