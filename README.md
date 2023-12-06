@@ -2,15 +2,24 @@
 
 		
 ## It supports a shell's most fundamental functions:
-1.Input (<)/Output(>) redirection to/from files.
-2.Connection of multiple processes through pipes ( | ).
-3.Creation and execution of background processes ( & ).
-4.Execution of multiple commands in a single command prompt ( ; ).
-5.The pushing of signals to the current executing process.
-6.Unix-style globbing with wild characters.
-7.Creation, use and destruction of aliases.
-8.Usage of environment variables ( $foo / ${foo} )
-9.The printing and use of previous commands.
+
+	1.Input (<)/Output(>) redirection to/from files.
+ 
+	2.Connection of multiple processes through pipes ( | ).
+ 
+	3.Creation and execution of background processes ( & ).
+ 
+	4.Execution of multiple commands in a single command prompt ( ; ).
+ 
+	5.The pushing of signals to the current executing process.
+ 
+	6.Unix-style globbing with wild characters.
+ 
+	7.Creation, use and destruction of aliases.
+
+	8.Usage of environment variables ( $foo / ${foo} )
+
+	9.The printing and use of previous commands.
 
 ## Functions it does *not* support:
 1.Redirecting file descriptors other than 0 and 1. As a result, one cannot, for example, redirect the error file descriptor to a file.
