@@ -1,4 +1,4 @@
-# This repository consists of a simple shell implementation in C.
+# This repository consists of a simple shell implementation in C. It was completed in the context of a university assignment and awarded full credit.
 
 		
 ## It supports a shell's most fundamental functions:
